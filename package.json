@@ -2,8 +2,11 @@
   "dependencies": {
     "@prisma/client": "^5.19.1",
     "@types/bcrypt": "^5.0.2",
+    "@types/qs": "^6.9.15",
+    "axios": "^1.7.7",
     "bcrypt": "^5.1.1",
     "prisma": "^5.19.1",
+    "qs": "^6.13.0",
     "react-use": "^17.5.1",
     "ts-node": "^10.9.2",
     "zustand": "^4.5.5"

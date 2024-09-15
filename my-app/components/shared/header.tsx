@@ -2,8 +2,10 @@ import { cn } from "@/lib/utils";
 import React from "react";
 import { Container } from "./container";
 import Image from "next/image";
+import Link from "next/link";
 import { Button } from "../ui";
 import { ArrowRight, ShoppingCart, User } from "lucide-react";
+import { SearchInput } from "./search-input";
 
 
 interface Props {
@@ -19,21 +21,27 @@ export const Header: React.FC<Props> = ({ className }) => {
             justify-between py-8">
 
                 {/* Left Part */}
-                <div className="flex items-center gap-4">
-                    <Image src="/logo.png" alt="logo"
-                    width={35} height={35} />
-                    <div>
-                        <h1 className="text-2xl uppercase 
-                        font-black">
-                            Next Pizza
-                        </h1>
-                        <p className="text-sm text-gray-400 
-                        leading-3">
-                            Смачніше вже нікуди
-                        </p>
+                <Link href="/">
+                    <div className="flex items-center gap-4">
+                        <Image src="/logo.png" alt="logo"
+                        width={35} height={35} />
+                        <div>
+                            <h1 className="text-2xl uppercase 
+                            font-black">
+                                Next Pizza
+                            </h1>
+                            <p className="text-sm text-gray-400 
+                            leading-3">
+                                Смачніше вже нікуди
+                            </p>
+                        </div>
                     </div>
-                </div>
+                </Link>
 
+                <div className="mx-10 flex-1">
+                    <SearchInput />
+                </div>
+                
                 {/* Right Part */}
                 <div className="flex items-center gap-3">
                     <Button variant="outline"

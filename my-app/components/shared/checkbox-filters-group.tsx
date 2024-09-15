@@ -2,25 +2,29 @@
 
 import React from "react";
 import { FilterCheckbox, FilterCheckboxProps } from "./filter-checkbox";
-import { Input } from "../ui";
+import { Input, Skeleton } from "../ui";
 
 type Item = FilterCheckboxProps;
 
 interface Props {
     title: string;
     items: Item[];
-    defaultItems: Item[];
+    defaultItems?: Item[];
     limit?: number;
+    loading?: boolean;
     searchInputPlaceholder?: string;
-    onChange?: (values: string[]) => void;
+    onClickCheckbox?: (id: string) => void;
     defaultValue?: string[];
+    selected?: Set<string>;
     className?: string;
+    name?: string
 }
 
 export const CheckboxFiltersGroup: React.FC<Props> = ({ 
     title, items, defaultItems, 
-    limit=5, searchInputPlaceholder="Пошук...", 
-    className, onChange, defaultValue
+    limit=5, searchInputPlaceholder="Пошук...",
+    loading, className, onClickCheckbox, 
+    selected, defaultValue, name
  }) => {
 
     const [showAll, setShowAll] = React.useState(false);
@@ -30,9 +34,26 @@ export const CheckboxFiltersGroup: React.FC<Props> = ({
         setSearchValue(value);
     }
 
+    if (loading){
+        return <div className={className}>
+            <p className="font-bold mb-3">{ title }</p>
+            
+            {
+                ...Array(limit)
+                .fill(0)
+                .map((_, index) => (
+                    <Skeleton key={index}
+                    className="h-6 mb-4 rounded-[8px] 
+                    bg-gray-200" />
+                ))
+            }
+            <Skeleton className="w-28 h-6 mb-4 rounded-[8px]" /> 
+        </div>
+    }
+
     const list = showAll ? 
     items.filter((item) => item.text.toLowerCase().includes(searchValue.toLocaleLowerCase())) 
-    : defaultItems?.slice(0, limit);
+    : (defaultItems || items).slice(0, limit);
 
     return(
         <div className={className}>
@@ -55,12 +76,13 @@ export const CheckboxFiltersGroup: React.FC<Props> = ({
                 {
                     list.map((item, index) => (
                         <FilterCheckbox 
-                        onCheckedChange={(ids) => console.log(ids)}
-                        checked={ false }
+                        onCheckedChange={() => onClickCheckbox?.(item.value)}
+                        checked={ selected?.has(item.value) }
                         key={ index }
                         value={ item.value }
                         text={ item.text }
-                        endAdornment={ item.endAdornment } />
+                        endAdornment={ item.endAdornment } 
+                        name={name}/>
                     ))
                 }
             </div>
