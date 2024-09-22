@@ -1,10 +1,10 @@
 "use client";
 
-import { Dialog } from "@/components/ui";
-import { DialogContent } from "@/components/ui/dialog";
+import { Dialog } from "@/shared/components/ui";
+import { DialogContent } from "@/shared/components/ui/dialog";
 import React from "react";
 import { Title } from "../title";
-import { cn } from "@/lib/utils";
+import { cn } from "@/shared/lib/utils";
 import { useRouter } from "next/navigation";
 import { ChooseProductForm } from "../choose-product-form";
 import { ProductWithRelations } from "@/@types/prisma";
@@ -27,7 +27,7 @@ export const ChooseProductModal: React.FC<Props> = ({
         onOpenChange={() => router.back()}>
             <DialogContent className={
                 cn(
-                    "p-0 max-w-[1000px] min-h-[500px] bg-white overflow-hidden"
+                    "p-0 max-w-[1000px] min-h-[500px] bg-white overflow-auto"
                     , className)
                 }>
                 {
@@ -35,7 +35,7 @@ export const ChooseProductModal: React.FC<Props> = ({
                         <ChoosePizzaForm
                         imageUrl={product.imageUrl}
                         name={product.name}
-                        ingredients={[]}
+                        ingredients={product.ingredients}
                         />
                     ): 
                     <ChooseProductForm 

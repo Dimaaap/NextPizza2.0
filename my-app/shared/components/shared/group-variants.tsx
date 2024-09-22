@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/shared/lib/utils";
 import React from "react";
 
 type Variant = {
@@ -13,11 +13,11 @@ interface Props {
     items: readonly Variant[];
     onClick?: (value: Variant["value"]) => void;
     className?: string;
-    selectedValue?: Variant["value"]
+    value?: Variant["value"]
 }
 
 export const GroupVariants: React.FC<Props> = ({ items,
-    onClick, className, selectedValue
+    onClick, className, value
  }) => {
     return(
         <div className={cn(
@@ -34,7 +34,7 @@ export const GroupVariants: React.FC<Props> = ({ items,
                         rounded-3xl transition-all duration-400 
                         text-sm`, 
                         {
-                            'bg-white shadow': item.value === selectedValue,
+                            'bg-white shadow': item.value === value,
                             'text-gray-500 opacity-50 pointer-events-none': item.disabled
                         },
                         className
