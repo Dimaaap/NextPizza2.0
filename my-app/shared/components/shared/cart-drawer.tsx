@@ -3,7 +3,6 @@
 import React from "react";
 import {
     Sheet,
-    SheetClose,
     SheetContent,
     SheetFooter,
     SheetHeader,
@@ -105,7 +104,7 @@ export const CartDrawer: React.FC<React.PropsWithChildren<Props>> = (
                             </span>
                         </div>
 
-                        <Link href="/cart">
+                        <Link href="/checkout">
                             <Button
                             type="submit"
                             className="w-full 

@@ -28,8 +28,7 @@ export const CheckoutItem: React.FC<Props> = ({
         )}>
             <div className="flex items-center gap-5 flex-1">
                 <CartItemDetails.Image src={imageUrl} />
-                <CartItemDetails.Info name={name} details={details}
-                className="w-10/2" />
+                <CartItemDetails.Info name={name} details={details}/>
             </div>
 
             <CartItemDetails.Price value={price} />
@@ -37,7 +36,7 @@ export const CheckoutItem: React.FC<Props> = ({
             <div className="flex items-center gap-5 ml-20">
                 <CartItemDetails.CountButton onClick={onClickCountButton} 
                 value={quantity} />
-                <button onClick={onClickRemove}>
+                <button type="button" onClick={onClickRemove}>
                     <X className="text-gray-400 cursor-pointer 
                     hover:text-gray-600" size={20} />
                 </button>

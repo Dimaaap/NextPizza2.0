@@ -1,16 +1,22 @@
 "use client";
 
+import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CheckoutAddressForm, CheckoutCart, CheckoutPersonalForm, CheckoutSidebar, Container, Title } from "@/shared/components/shared";
 import { useCart } from "@/shared/hooks";
 import { checkoutFormSchema, TCheckoutFormValues } from "@/shared/components/shared/checkout/checkout-form-schema";
+import { CheckoutAddressForm, CheckoutCart, CheckoutPersonalForm } from "@/shared/components/shared/checkout";
+import { CheckoutSidebar } from "@/shared/components/shared/checkout-sidebar";
+import { Container, Title } from "@/shared/components/shared";
+import { createOrder } from "@/app/actions";
+import toast from "react-hot-toast";
 
 
 export default function CheckoutPage() {
-    
+    const [submitting, setSubmitting] = React.useState(false);
+
     const { totalAmount, updateItemQuantity, 
-        items, removeCartItem
+        items, removeCartItem, loading
      } = useCart();
 
      const form = useForm<TCheckoutFormValues>({
@@ -25,8 +31,26 @@ export default function CheckoutPage() {
         }
      });
 
-     const onSubmit = (data: TCheckoutFormValues) => {
-        console.log(data);
+     const onSubmit = async (data: TCheckoutFormValues) => {
+        try {
+            setSubmitting(true)
+            const url = await createOrder(data);
+
+            toast.success("Замовлення успішно оформлене! 📝 Перехід на оплату...", {
+                icon: "✅"
+            })
+
+            if(url !== null) {
+                location.href = String(url);
+            }
+
+        } catch (err){
+            console.log(err);
+            setSubmitting(false);
+            toast.error("Не вдалось створити замовлення", {
+                icon: "❌"
+            })
+        }
      }
 
      const onClickCountButton = (id: number, quantity: number, type: "plus" | "minus") => {
@@ -50,15 +74,20 @@ export default function CheckoutPage() {
                             onClickCountButton={onClickCountButton}
                             removeCartItem={removeCartItem}
                             items={items}
+                            loading={loading}
                             />
 
-                            <CheckoutPersonalForm />
+                            <CheckoutPersonalForm className={ loading ? 
+                                "opacity-40 pointer-events-none" : ""}  />
                             
-                            <CheckoutAddressForm />
+                            <CheckoutAddressForm className={ loading ? 
+                                "opacity-40 pointer-events-none": ""
+                             } />
                         </div>
 
                         {/* Right part */}
-                        <CheckoutSidebar totalAmount={totalAmount} />
+                        <CheckoutSidebar 
+                        totalAmount={totalAmount} loading={loading || submitting} />
                     </div>
                 </form>
             </FormProvider>
